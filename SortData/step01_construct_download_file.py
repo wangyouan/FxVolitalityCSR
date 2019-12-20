@@ -38,5 +38,5 @@ if __name__ == '__main__':
 
             formula = '=@TR({},"{}","Period=FY0 Frq=FY SDate=0 EDate=-17 CH=fperiod RH=Fd",A3'.format(
                 isin, '; '.join(QUERY_VARIABLES))
-            ws.write(0, 0, formula)
+            ws.write_formula('A1', formula)
             wb.close()
