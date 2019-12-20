@@ -32,7 +32,7 @@ if __name__ == '__main__':
 
     for sheetname in tqdm(xlsx_file.sheet_names, desc='sheet', leave=True):
         country_df: DataFrame = xlsx_file.parse(sheetname, skiprows=1)
-        for isin in tqdm(country_df[const.ISIN], desc='country', leave=True, nested=True):
+        for isin in tqdm(country_df[const.ISIN], desc='country', leave=True):
             wb = xlsxwriter.Workbook(os.path.join(result_path, '{}.xlsx'.format(isin)))
             ws = wb.add_worksheet()
 
