@@ -48,5 +48,12 @@ if __name__ == '__main__':
     for key in ['Type', 'MNEM']:
         a4_df_with_fx.loc[:, key] = a4_df_with_fx[key].astype(str)
     a4_df_with_fx2: DataFrame = a4_df_with_fx.rename(columns=lambda x: x.replace(' ', '_'))
+    a4_df_with_fx2.loc[:, 'ENV_Score'] = a4_df_with_fx2[
+        'Resource_Use_Score Emissions_Score Environmental_Innovation_Score'.split(' ')].mean(axis=1)
+    a4_df_with_fx2.loc[:, 'SOC_Score'] = a4_df_with_fx2[
+        ['Workforce_Score', 'Human_Rights_Score', 'Community_Score', 'Product_Responsibility_Score']].mean(axis=1)
+    a4_df_with_fx2.loc[:, 'ES_Score'] = a4_df_with_fx2[['ENV_Score', 'SOC_Score']].mean(axis=1)
+    a4_df_with_fx2.loc[:, 'CGOV_Score'] = a4_df_with_fx2[
+        ['Management_Score', 'Shareholders_Score', 'CSR_Strategy_Score']].mean(axis=1)
     a4_df_with_fx2.to_pickle(os.path.join(const.TEMP_PATH, '20191223_a4_score_with_fx_code.pkl'))
     a4_df_with_fx2.to_stata(os.path.join(const.RESULT_PATH, '20191223_a4_score_with_fx_code.dta'), write_index=False)

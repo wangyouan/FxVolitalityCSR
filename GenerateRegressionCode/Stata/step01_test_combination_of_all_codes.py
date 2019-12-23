@@ -35,8 +35,8 @@ if __name__ == '__main__':
     fe_option = 'firm_fe country_fe industry_year_fe'
     text_option = 'Firm Dummy, Yes, Country Dummy, Yes, Industry Year Dummy, Yes, Cluster, Firm'
     or_option = 'tstat bdec(4) tdec(4) rdec(4) nolabel append'
-    for dep in DEP_VARS:
-        for ind in IND_VARS:
+    for ind in IND_VARS:
+        for dep in DEP_VARS:
             cmd_list.append('capture qui reghdfe {dep} {ind}, absorb({fe}) cluster(firm_fe) keepsingleton'.format(
                 dep=dep, ind=ind, fe=fe_option))
             cmd_list.append('outreg2 using "{save_file}", addtext({text}) {or_option}'.format(
