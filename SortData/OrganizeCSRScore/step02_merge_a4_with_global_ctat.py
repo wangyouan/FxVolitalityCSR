@@ -24,4 +24,5 @@ if __name__ == '__main__':
         subset=[const.GVKEY, 'fyear'], keep='last').dropna(subset=['isin']).rename(columns={'isin': const.ISIN,
                                                                                             'fyear': const.YEAR})
 
+    # merge will lose around 25% data
     a4_df_ctat: DataFrame = a4_df.merge(global_ctat_df, on=[const.ISIN, const.YEAR], how='inner')
