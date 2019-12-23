@@ -18,6 +18,8 @@ class Constants(PathInfo):
     SIC_CODE = 'sic'
     CUSIP8 = 'cusip8'
 
+    ROA = 'roa'
+
 
 if __name__ == '__main__':
     pass

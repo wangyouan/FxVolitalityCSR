@@ -16,7 +16,7 @@ import eikon as ek
 from tqdm import tqdm
 import pandas as pd
 from pandas import DataFrame
-from .step01_construct_download_file import QUERY_VARIABLES
+from DownloadData.step01_construct_download_file import QUERY_VARIABLES
 
 if __name__ == '__main__':
     ek.set_app_key('b523a56d9c824a578861a38e8e11ac084cf2a8a6')
