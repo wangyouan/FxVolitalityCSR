@@ -19,7 +19,7 @@ from tqdm import tqdm
 
 from Constants import Constants as const
 
-QUERY_VARIABLES = ['TR.TRESGScore', 'TR.TRESGResourceUseScore', 'TR.TRESGEmissionsScore', 'TR.TRESGInnovationScore',
+QUERY_VARIABLES = ['TR.TRESGScore.Date', 'TR.TRESGScore', 'TR.TRESGResourceUseScore', 'TR.TRESGEmissionsScore', 'TR.TRESGInnovationScore',
                    'TR.TRESGWorkforceScore', 'TR.TRESGHumanRightsScore', 'TR.TRESGCommunityScore',
                    'TR.TRESGProductResponsibilityScore', 'TR.TRESGManagementScore', 'TR.TRESGShareholdersScore',
                    'TR.TRESGCSRStrategyScore', 'TR.TRESGCScore', 'TR.TRESGCConvroversiesScore']
