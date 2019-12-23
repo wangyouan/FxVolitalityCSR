@@ -37,6 +37,7 @@ if __name__ == '__main__':
             error_isin.append(f)
             continue
         a4_df.loc[:, 'Date'] = pd.to_datetime(a4_df['Date'], format='%Y-%m-%dT%H:%M:%SZ')
+        a4_df.loc[:, const.ISIN] = f.split('.')[0]
         a4_dfs.append(a4_df)
 
     a4_df: DataFrame = pd.concat(a4_dfs, ignore_index=True)
@@ -44,4 +45,7 @@ if __name__ == '__main__':
     a4_df_valid: DataFrame = a4_df.dropna(subset=other_keys, how='all')
     a4_df_valid.loc[:, const.YEAR] = a4_df_valid['Date'].dt.year
 
-    pd.to_pickle(error_isin, '20191223_error_isin_code.pkl')
+    a4_with_other_symbol: DataFrame = a4_df_valid.merge(symbel_df.drop([1825]), on=const.ISIN)
+    a4_with_other_symbol.to_pickle(os.path.join(const.TEMP_PATH, '20191223_tr_a4_score.pkl'))
+    a4_with_other_symbol.to_csv(os.path.join(const.DATABASE_PATH, 'TR', 'asset4', '20191223_tr_a4_score.csv'),
+                                index=False)
