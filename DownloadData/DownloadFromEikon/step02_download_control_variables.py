@@ -17,10 +17,10 @@ from tqdm import tqdm
 import pandas as pd
 from pandas import DataFrame
 
-CTRL_VARS = ['TR.Cash.Date', 'TR.CompanyMarketCap', 'TR.TotalRevenue', 'TR.EBITDA', 'TR.Cash', 'TR.TotalAssetsReported',
-             'TR.NormalizedEbitda', 'TR.TangibleBookValueRptd', 'TR.CapitalExpenditures', 'TR.EPSActValue',
-             'TR.PriceToBVPerShare', 'TR.DepreciationDepletion', 'TR.Amortization', 'TR.TotalLiabilities',
-             'TR.NetSales']
+CTRL_VARS = ['TR.CompanyMarketCap.Date', 'TR.CompanyMarketCap', 'TR.TotalRevenue', 'TR.EBITDA', 'TR.Cash',
+             'TR.TotalAssetsReported', 'TR.NormalizedEbitda', 'TR.TangibleBookValueRptd', 'TR.CapitalExpenditures',
+             'TR.EPSActValue', 'TR.PriceToBVPerShare', 'TR.DepreciationDepletion', 'TR.Amortization',
+             'TR.TotalLiabilities', 'TR.NetSales']
 
 if __name__ == '__main__':
     a4_score_path = r'F:\Users\Documents\temp'

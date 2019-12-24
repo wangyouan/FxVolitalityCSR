@@ -7,7 +7,7 @@
 # @Email: wangyouan@gamil.com
 
 """
-python -m SortData.OrganizeCSRScore.step01_restrore_a4_score
+python -m SortData.OrganizeRegressionCode.step01_restrore_a4_score
 """
 
 import os
