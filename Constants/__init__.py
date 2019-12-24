@@ -20,7 +20,16 @@ class Constants(PathInfo):
     COUNTRY2 = 'country2'
     COUNTRY = 'country'
 
+    # construct variables
     ROA = 'roa'
+    CASH_HOLDING = 'cash_holding'
+    CASH_FLOW = 'cash_flow'
+    TOTAL_ASSETS_ln = 'at_ln'
+    TOTAL_ASSETS = 'at'
+    CAPEX = 'CAPX'
+    SALE_GROWTH = 'sale_growth'
+    LEVERAGE = 'leverage'
+    TANGIBILITY = 'tangibility'
 
     # Fixed effects
     FIRM_FE = 'firm_fe'
