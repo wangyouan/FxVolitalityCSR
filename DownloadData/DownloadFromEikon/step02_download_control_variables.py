@@ -32,9 +32,14 @@ if __name__ == '__main__':
 
     for f in tqdm(os.listdir(os.path.join(a4_score_path, 'a4s'))):
         if os.path.isfile(os.path.join(save_path, f)):
-            continue
-        data_df: DataFrame = pd.read_pickle(os.path.join(a4_score_path, 'a4s', f))
-        identifier = data_df.iloc[0]['Instrument']
+            pre_df: DataFrame = pd.read_pickle(os.path.join(save_path, f))
+            pre_df_valid: DataFrame = pre_df.dropna(subset=[i for i in pre_df.keys() if i != 'Instrument'], how='all')
+            if pre_df_valid.loc[pre_df_valid['Date'].isnull()].empty:
+                continue
+            identifier = pre_df_valid.iloc[0]['Instrument']
+        else:
+            data_df: DataFrame = pd.read_pickle(os.path.join(a4_score_path, 'a4s', f))
+            identifier = data_df.iloc[0]['Instrument']
         df, err = ek.get_data(identifier, CTRL_VARS,
                               {'SDate': 0, 'EDate': -19, 'FRQ': 'FY', 'RH': 'Fd'})
         df.to_pickle(os.path.join(save_path, f))
