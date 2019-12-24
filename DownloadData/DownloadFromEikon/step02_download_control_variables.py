@@ -47,4 +47,4 @@ if __name__ == '__main__':
         df, err = ek.get_data(identifier, CTRL_VARS,
                               {'SDate': 0, 'EDate': -19, 'FRQ': 'FY', 'RH': 'Fd'})
         df.to_pickle(os.path.join(save_path, f))
-        print(error_list)
+    print(error_list)
