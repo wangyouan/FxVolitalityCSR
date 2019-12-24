@@ -31,6 +31,8 @@ if __name__ == '__main__':
     ek.set_app_key('b523a56d9c824a578861a38e8e11ac084cf2a8a6')
 
     for f in tqdm(os.listdir(os.path.join(a4_score_path, 'a4s'))):
+        if os.path.isfile(os.path.join(save_path, f)):
+            continue
         data_df: DataFrame = pd.read_pickle(os.path.join(a4_score_path, 'a4s', f))
         identifier = data_df.iloc[0]['Instrument']
         df, err = ek.get_data(identifier, CTRL_VARS,
