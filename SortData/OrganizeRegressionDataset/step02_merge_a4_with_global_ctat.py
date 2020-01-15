@@ -7,7 +7,7 @@
 # @Email: wangyouan@gamil.com
 
 """
-python -m SortData.OrganizeRegressionCode.step02_merge_a4_with_global_ctat
+python -m SortData.OrganizeRegressionDataset.step02_merge_a4_with_global_ctat
 """
 
 import os

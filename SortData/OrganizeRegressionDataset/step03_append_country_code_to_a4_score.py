@@ -9,7 +9,7 @@
 """
 Missing countries: USA, CHN, CHL, TUR, QAT, OMN, ARE, MAR
 
-python -m SortData.OrganizeRegressionCode.step03_append_country_code_to_a4_score
+python -m SortData.OrganizeRegressionDataset.step03_append_country_code_to_a4_score
 """
 
 import os
