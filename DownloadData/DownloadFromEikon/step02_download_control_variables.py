@@ -17,16 +17,22 @@ from tqdm import tqdm
 import pandas as pd
 from pandas import DataFrame
 
-CTRL_VARS = ['TR.CompanyMarketCap.Date', 'TR.CompanyMarketCap', 'TR.TotalRevenue', 'TR.EBITDA', 'TR.Cash',
-             'TR.TotalAssetsReported', 'TR.NormalizedEbitda', 'TR.TangibleBookValueRptd', 'TR.CapitalExpenditures',
-             'TR.EPSActValue', 'TR.PriceToBVPerShare', 'TR.DepreciationDepletion', 'TR.Amortization',
-             'TR.TotalLiabilities', 'TR.NetSales']
+CTRL_VARS = ['TR.TotalAssetsReported.Date', 'TR.TotalAssetsReported', 'TR.Cash', 'TR.NetSales',
+             'TR.ResearchAndDevelopment', 'TR.NetIncomeBeforeExtraItems', 'TR.PropertyPlantEquipmentTotalNet',
+             'TR.TotalCurrLiabilities', 'TR.TotalLongTermDebt', 'TR.TotalEquity', 'TR.CashDividendsPaidCommon',
+             'TR.CashDividendsPaidPreferred', 'TR.CashAndSTInvestments', 'TR.CompanyMarketCap', 'TR.CommonStockTotal',
+             'TR.EBITDA', 'TR.NetIncomeBeforeTaxes']
+
+DATE_VARS = ['TR.IPODate', 'TR.OrgFoundedYear', 'TR.CompanyIncorpDate']
 
 if __name__ == '__main__':
     a4_score_path = r'F:\Users\Documents\temp'
-    save_path = os.path.join(a4_score_path, 'ctrl')
+    save_path = os.path.join(a4_score_path, 'ctrl2')
     if not os.path.isdir(save_path):
         os.makedirs(save_path)
+    date_save_path = os.path.join(a4_score_path, 'ipo_date')
+    if not os.path.isdir(date_save_path):
+        os.makedirs(date_save_path)
 
     ek.set_app_key('b523a56d9c824a578861a38e8e11ac084cf2a8a6')
     error_list = list()
@@ -47,4 +53,6 @@ if __name__ == '__main__':
         df, err = ek.get_data(identifier, CTRL_VARS,
                               {'SDate': 0, 'EDate': -19, 'FRQ': 'FY', 'RH': 'Fd'})
         df.to_pickle(os.path.join(save_path, f))
+        df, err = ek.get_data(identifier, DATE_VARS)
+        df.to_pickle(os.path.join(date_save_path, f))
     print(error_list)
