@@ -51,7 +51,7 @@ if __name__ == '__main__':
             data_df: DataFrame = pd.read_pickle(os.path.join(a4_score_path, 'a4s', f))
             identifier = data_df.iloc[0]['Instrument']
         df, err = ek.get_data(identifier, CTRL_VARS,
-                              {'SDate': 0, 'EDate': -19, 'FRQ': 'FY', 'RH': 'Fd'})
+                              {'SDate': 0, 'EDate': -25, 'FRQ': 'FY', 'RH': 'Fd'})
         df.to_pickle(os.path.join(save_path, f))
         df, err = ek.get_data(identifier, DATE_VARS)
         df.to_pickle(os.path.join(date_save_path, f))
