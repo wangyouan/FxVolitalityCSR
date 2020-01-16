@@ -34,7 +34,7 @@ if __name__ == '__main__':
     if not os.path.isdir(date_save_path):
         os.makedirs(date_save_path)
 
-    ek.set_app_key('b523a56d9c824a578861a38e8e11ac084cf2a8a6')
+    ek.set_app_key('86b0451ef6fe40c0abe99a0d0f851b0ae0cb9f6f')
     error_list = list()
 
     for f in tqdm(os.listdir(os.path.join(a4_score_path, 'a4s'))):
