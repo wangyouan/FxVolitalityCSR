@@ -34,5 +34,5 @@ if __name__ == '__main__':
         real_key = adp_key[:-4]
         reg_df_2.loc[:, real_key] = reg_df_2[real_key].fillna(reg_df_2[adp_key])
 
-    reg_df_3: DataFrame = reg_df_2.drop(adp_key, axis=1)
+    reg_df_3: DataFrame = reg_df_2.drop(adp_keys, axis=1)
     reg_df_3.to_pickle(os.path.join(const.TEMP_PATH, '20200115_a4_fx_reg_fillin_missing_country.pkl'))
