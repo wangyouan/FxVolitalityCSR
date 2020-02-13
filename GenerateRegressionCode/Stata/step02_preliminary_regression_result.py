@@ -14,14 +14,15 @@ import os
 
 from Constants import Constants as const
 
-if __name__ == '__main__':
-    DEP_VARS = ['ESG_Score', 'ESG_Controversies_Score', 'ES_Score', 'ENV_Score', 'SOC_Score', 'CGOV_Score',
-                'Resource_Use_Score', 'Emissions_Score', 'Environmental_Innovation_Score', 'Workforce_Score',
-                'Community_Score', 'Human_Rights_Score', 'Product_Responsibility_Score', 'Management_Score',
-                'Shareholders_Score', 'CSR_Strategy_Score']
+DEP_VARS = ['ESG_Score', 'ESG_Controversies_Score', 'ES_Score', 'ENV_Score', 'SOC_Score', 'CGOV_Score',
+            'Resource_Use_Score', 'Emissions_Score', 'Environmental_Innovation_Score', 'Workforce_Score',
+            'Community_Score', 'Human_Rights_Score', 'Product_Responsibility_Score', 'Management_Score',
+            'Shareholders_Score', 'CSR_Strategy_Score']
 
-    CTRL_VARS = ['GDP_LN GDP_GROWTH GDP_CAP_LN IMPORT_RATIO EXPORT_RATIO',
-                 'LEVERAGE', 'EBITDA', 'EBITDA_SIGMA', 'FIRM_AGE', 'at_ln']
+CTRL_VARS = ['GDP_LN GDP_GROWTH GDP_CAP_LN IMPORT_RATIO EXPORT_RATIO',
+             'LEVERAGE', 'EBITDA', 'EBITDA_SIGMA', 'FIRM_AGE', 'at_ln']
+
+if __name__ == '__main__':
 
     reg_code_path = os.path.join(const.MINING_CODE_PATH, '20200211_preliminary_regression_code.do')
 
