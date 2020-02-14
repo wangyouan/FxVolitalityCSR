@@ -20,7 +20,7 @@ DEP_VARS = ['ESG_Score', 'ESG_Controversies_Score', 'ES_Score', 'ENV_Score', 'SO
             'Shareholders_Score', 'CSR_Strategy_Score']
 
 CTRL_VARS = ['GDP_LN GDP_GROWTH GDP_CAP_LN IMPORT_RATIO EXPORT_RATIO',
-             'LEVERAGE', 'EBITDA', 'EBITDA_SIGMA', 'FIRM_AGE', 'at_ln']
+             'LEVERAGE', 'PTBI', 'VOL_PTBI', 'FIRM_AGE', 'at_ln']
 
 IND_VARS = ['usd_annual_unexpected_garch_vola usd_annual_log_rate',
             'basket60_ann_unexp_garch_vol basket60_annual_log_rate',
@@ -33,22 +33,23 @@ IND_VARS = ['usd_annual_unexpected_garch_vola usd_annual_log_rate',
 if __name__ == '__main__':
     date_code = '20200214'
 
-    reg_code_path = os.path.join(const.MINING_CODE_PATH, '{}_preliminary_regression_code2.do'.format(date_code))
-    save_path = os.path.join(const.MINING_RESULT_PATH, '{}_combination2'.format(date_code))
+    reg_code_path = os.path.join(const.MINING_CODE_PATH, '{}_preliminary_regression_code8.do'.format(date_code))
+    save_path = os.path.join(const.MINING_RESULT_PATH, '{}_combination8'.format(date_code))
     if not os.path.isdir(save_path):
         os.makedirs(save_path)
 
-    cmd_list = ['clear', 'use "{}"'.format(os.path.join(const.RESULT_PATH, '20200116_fx_csr_reg_df.dta'))]
-    fe_option = 'firm_fe industry_year_fe'
-    text_option = 'Firm Dummy, Yes, Industry Year Dummy, Yes, Cluster, Firm'
+    cmd_list = ['clear', 'use "{}"'.format(os.path.join(const.RESULT_PATH, '20200116_fx_csr_reg_df.dta')),
+                'drop if basket27_annual_unexpected_garch == .']
+    fe_option = 'firm_fe industry_fe year'
+    text_option = 'Firm Dummy, Yes, Industry Dummy, Yes, Year Dummy, Yes, Cluster, Firm'
     or_option = 'tstat bdec(4) tdec(4) rdec(4) nolabel append'
 
     for ind in IND_VARS:
         for dep in DEP_VARS:
             cmd_list.append(
-                'capture qui reghdfe {dep} {ind} {ctrl} {condition}, absorb({fe}) cluster(firm_fe) keepsingleton'.format(
+                'capture qui reghdfe {dep} {ind} {ctrl} {cond}, absorb({fe}) cluster(firm_fe) keepsingleton'.format(
                     dep=dep, ind=ind, fe=fe_option, ctrl=' '.join(CTRL_VARS),
-                    condition='if basket27_annual_unexpected_garch != .'))
+                    cond=''))
             cmd_list.append('outreg2 using "{save_file}", addtext({text}) {or_option}'.format(
                 save_file=os.path.join(save_path, '{}_fe_reg_result_ind_{}_{}.txt'.format(
                     date_code, ind.split('_')[0], '2' if 'reali' in ind else '1')), text=text_option,

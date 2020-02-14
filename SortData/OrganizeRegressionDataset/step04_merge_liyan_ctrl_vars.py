@@ -18,7 +18,7 @@ from pandas import DataFrame
 from Constants import Constants as const
 
 if __name__ == '__main__':
-    reg_df: DataFrame = pd.read_pickle(os.path.join(const.TEMP_PATH, '20191224_a4_fx_vol_dataset.pkl'))
+    reg_df: DataFrame = pd.read_pickle(os.path.join(const.TEMP_PATH, '20200214_a4_fx_vol_dataset_t_1.pkl'))
     ly_ctrl_df: DataFrame = pd.read_pickle(os.path.join(const.DATA_PATH, 'LiYan', 'fx_volatility.pkl'))
     ly_ctrl_df.loc[:, const.GVKEY] = ly_ctrl_df[const.GVKEY].astype(int)
 
@@ -31,5 +31,5 @@ if __name__ == '__main__':
         reg_df_ctrl.loc[:, key] = reg_df_ctrl.groupby(['country', const.YEAR])[key].bfill()
     missing_country_reg_df: DataFrame = reg_df_ctrl.loc[
         reg_df_ctrl['CAPITAL_RATIO'].isnull(), ['country', const.YEAR]].drop_duplicates()
-    missing_country_reg_df.to_excel(os.path.join(const.RESULT_PATH, '20200114_missing_country.xlsx'), index=False)
-    reg_df_ctrl.to_pickle(os.path.join(const.TEMP_PATH, '20200114_a4_fx_vol_ctrl_dataset.pkl'))
+    # missing_country_reg_df.to_excel(os.path.join(const.RESULT_PATH, '20200114_missing_country.xlsx'), index=False)
+    reg_df_ctrl.to_pickle(os.path.join(const.TEMP_PATH, '20200214_a4_fx_vol_ctrl_dataset_t_1.pkl'))

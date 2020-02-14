@@ -43,9 +43,18 @@ def calculate_kz_index(df):
     return tmp_df
 
 
+def rename_columns(name):
+    replace_dict = {'annual': 'ann', 'volatility': 'vol', 'unexpected': 'unexp', 'realized': 'real'}
+    for i in replace_dict:
+        name = name.replace(i, replace_dict[i])
+
+    return name
+
+
 if __name__ == '__main__':
     tqdm.pandas()
-    reg_df: DataFrame = pd.read_pickle(os.path.join(const.TEMP_PATH, '20200115_a4_fx_reg_fillin_missing_country.pkl'))
+    reg_df: DataFrame = pd.read_pickle(
+        os.path.join(const.TEMP_PATH, '20200214_a4_fx_reg_fillin_missing_country_t_1.pkl'))
 
     currency_related_variables = ['usd_annual_log_rate', 'usd_annual_realized_volatility',
                                   'usd_annual_garch_volatility', 'usd_annual_unexpected_realized_volatility',
@@ -55,16 +64,20 @@ if __name__ == '__main__':
                                   'basket60_annual_unexpected_garch_volatility', 'basket27_annual_log_rate',
                                   'basket27_annual_realized_volatility', 'basket27_annual_garch_volatility',
                                   'basket27_annual_unexpected_realized_volatility',
-                                  'basket27_annual_unexpected_garch_volatility', 'usd_ann_ln', 'usd_ann_vol',
-                                  'usd_ann_garch_vol', 'usd_ann_unexp_vol', 'usd_ann_unexp_garch_vol',
-                                  'basket60_ann_ln', 'basket60_ann_vol', 'basket60_ann_garch_vol',
-                                  'basket60_ann_unexp_vol', 'basket60_ann_unexp_garch_vol', 'basket27_ann_ln',
-                                  'basket27_ann_vol', 'basket27_ann_garch_vol', 'basket27_ann_unexp_vol',
-                                  'basket27_ann_unexp_garch_vol', 'usd_ann_imp_vol', 'usd_ann_unexp_imp_vol']
+                                  'basket27_annual_unexpected_garch_volatility']
+
+    key_to_drop = ['usd_ann_ln', 'usd_ann_vol',
+                   'usd_ann_garch_vol', 'usd_ann_unexp_vol', 'usd_ann_unexp_garch_vol',
+                   'basket60_ann_ln', 'basket60_ann_vol', 'basket60_ann_garch_vol',
+                   'basket60_ann_unexp_vol', 'basket60_ann_unexp_garch_vol', 'basket27_ann_ln',
+                   'basket27_ann_vol', 'basket27_ann_garch_vol', 'basket27_ann_unexp_vol',
+                   'basket27_ann_unexp_garch_vol', 'usd_ann_imp_vol', 'usd_ann_unexp_imp_vol']
 
     for key in tqdm(currency_related_variables):
         reg_df.loc[:, key] = reg_df.groupby(['CURRENCY', const.YEAR]).bfill()
         reg_df.loc[:, key] = reg_df.groupby(['CURRENCY', const.YEAR]).ffill()
+
+    reg_df_2: DataFrame = reg_df.drop(key_to_drop, axis=1).rename(columns=rename_columns)
 
     # construct control variables
     ctat_df: DataFrame = pd.read_csv(os.path.join(const.DATABASE_PATH, 'Compustat',
@@ -145,7 +158,7 @@ if __name__ == '__main__':
 
     ctat_df_with_eikon.loc[:, 'KZ_INDEX'] = ctat_df_with_eikon.groupby(const.GVKEY).progress_apply(calculate_kz_index)
 
-    ctat_df_with_eikon.to_pickle(os.path.join(const.TEMP_PATH, '20200116_ctat_global_ctrl_vars.pkl'))
+    ctat_df_with_eikon.to_pickle(os.path.join(const.TEMP_PATH, '20200214_ctat_global_ctrl_vars.pkl'))
     ctrl_df: DataFrame = ctat_df_with_eikon.rename(
         columns={'isin': 'ISIN'}).loc[:,
                          [const.GVKEY, 'ISIN', const.YEAR, 'CASH_LN', 'CASH_RATIO', 'KZ_INDEX', 'TobinQ', 'EBITDA',
@@ -172,6 +185,5 @@ if __name__ == '__main__':
         key_to_drop.append(isin_key)
 
     reg_df_3: DataFrame = reg_df_2.drop([key_to_drop], axis=1).replace([np.inf, -np.inf], np.nan)
-    reg_df_3.to_pickle(os.path.join(const.TEMP_PATH, '20200116_fx_csr_reg_df.pkl'))
-    reg_df_3.to_stata(os.path.join(const.RESULT_PATH, '20200116_fx_csr_reg_df.dta'), write_index=False)
-
+    reg_df_3.to_pickle(os.path.join(const.TEMP_PATH, '20200214_fx_csr_reg_df.pkl'))
+    reg_df_3.to_stata(os.path.join(const.RESULT_PATH, '20200214_fx_csr_reg_df.dta'), write_index=False)
