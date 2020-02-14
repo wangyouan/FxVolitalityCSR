@@ -32,8 +32,8 @@ if __name__ == '__main__':
     symbol_df_cty: DataFrame = symbol_df.loc[:, [const.ISIN, 'a4_country_code']].merge(country_code,
                                                                                        on=['a4_country_code'])
     a4_df: DataFrame = pd.read_pickle(os.path.join(const.TEMP_PATH, '20191223_tr_a4_score.pkl'))
-    a4_df_with_country_symbol: DataFrame = a4_df.merge(symbol_df_cty, on=[const.ISIN])
     a4_df.loc[:, const.YEAR] -= 1
+    a4_df_with_country_symbol: DataFrame = a4_df.merge(symbol_df_cty, on=[const.ISIN])
 
     fx_data_df: DataFrame = pd.read_pickle(os.path.join(const.DATA_PATH, '20190429_foreign_exchange_volatility.pkl'))
     quarterly_keys = [i for i in fx_data_df.keys() if 'quarter' in i]
