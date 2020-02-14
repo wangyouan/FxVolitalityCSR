@@ -51,33 +51,31 @@ def rename_columns(name):
     return name
 
 
+currency_related_variables = ['usd_annual_log_rate', 'usd_annual_realized_volatility',
+                              'usd_annual_garch_volatility', 'usd_annual_unexpected_realized_volatility',
+                              'usd_annual_unexpected_garch_volatility', 'basket60_annual_log_rate',
+                              'basket60_annual_realized_volatility', 'basket60_annual_garch_volatility',
+                              'basket60_annual_unexpected_realized_volatility',
+                              'basket60_annual_unexpected_garch_volatility', 'basket27_annual_log_rate',
+                              'basket27_annual_realized_volatility', 'basket27_annual_garch_volatility',
+                              'basket27_annual_unexpected_realized_volatility',
+                              'basket27_annual_unexpected_garch_volatility']
+
+key_to_drop = ['usd_ann_ln', 'usd_ann_vol',
+               'usd_ann_garch_vol', 'usd_ann_unexp_vol', 'usd_ann_unexp_garch_vol',
+               'basket60_ann_ln', 'basket60_ann_vol', 'basket60_ann_garch_vol',
+               'basket60_ann_unexp_vol', 'basket60_ann_unexp_garch_vol', 'basket27_ann_ln',
+               'basket27_ann_vol', 'basket27_ann_garch_vol', 'basket27_ann_unexp_vol',
+               'basket27_ann_unexp_garch_vol', 'usd_ann_imp_vol', 'usd_ann_unexp_imp_vol']
+
 if __name__ == '__main__':
     tqdm.pandas()
     reg_df: DataFrame = pd.read_pickle(
         os.path.join(const.TEMP_PATH, '20200214_a4_fx_reg_fillin_missing_country_t_1.pkl'))
 
-    currency_related_variables = ['usd_annual_log_rate', 'usd_annual_realized_volatility',
-                                  'usd_annual_garch_volatility', 'usd_annual_unexpected_realized_volatility',
-                                  'usd_annual_unexpected_garch_volatility', 'basket60_annual_log_rate',
-                                  'basket60_annual_realized_volatility', 'basket60_annual_garch_volatility',
-                                  'basket60_annual_unexpected_realized_volatility',
-                                  'basket60_annual_unexpected_garch_volatility', 'basket27_annual_log_rate',
-                                  'basket27_annual_realized_volatility', 'basket27_annual_garch_volatility',
-                                  'basket27_annual_unexpected_realized_volatility',
-                                  'basket27_annual_unexpected_garch_volatility']
-
-    key_to_drop = ['usd_ann_ln', 'usd_ann_vol',
-                   'usd_ann_garch_vol', 'usd_ann_unexp_vol', 'usd_ann_unexp_garch_vol',
-                   'basket60_ann_ln', 'basket60_ann_vol', 'basket60_ann_garch_vol',
-                   'basket60_ann_unexp_vol', 'basket60_ann_unexp_garch_vol', 'basket27_ann_ln',
-                   'basket27_ann_vol', 'basket27_ann_garch_vol', 'basket27_ann_unexp_vol',
-                   'basket27_ann_unexp_garch_vol', 'usd_ann_imp_vol', 'usd_ann_unexp_imp_vol']
-
     for key in tqdm(currency_related_variables):
         reg_df.loc[:, key] = reg_df.groupby(['CURRENCY', const.YEAR]).bfill()
         reg_df.loc[:, key] = reg_df.groupby(['CURRENCY', const.YEAR]).ffill()
-
-    reg_df_2: DataFrame = reg_df.drop(key_to_drop, axis=1).rename(columns=rename_columns)
 
     # construct control variables
     ctat_df: DataFrame = pd.read_csv(os.path.join(const.DATABASE_PATH, 'Compustat',
@@ -158,7 +156,7 @@ if __name__ == '__main__':
 
     ctat_df_with_eikon.loc[:, 'KZ_INDEX'] = ctat_df_with_eikon.groupby(const.GVKEY).progress_apply(calculate_kz_index)
 
-    ctat_df_with_eikon.to_pickle(os.path.join(const.TEMP_PATH, '20200214_ctat_global_ctrl_vars.pkl'))
+    ctat_df_with_eikon.to_pickle(os.path.join(const.TEMP_PATH, '20200214_ctat_global_ctrl_vars_t_1.pkl'))
     ctrl_df: DataFrame = ctat_df_with_eikon.rename(
         columns={'isin': 'ISIN'}).loc[:,
                          [const.GVKEY, 'ISIN', const.YEAR, 'CASH_LN', 'CASH_RATIO', 'KZ_INDEX', 'TobinQ', 'EBITDA',
@@ -170,7 +168,6 @@ if __name__ == '__main__':
     reg_df_2: DataFrame = reg_df_1.merge(ctrl_df.drop(['gvkey'], axis=1), on=['ISIN', const.YEAR],
                                          suffixes=['', '_isin'], how='left')
 
-    key_to_drop = []
     for key in ['CASH_LN', 'CASH_RATIO', 'KZ_INDEX', 'TobinQ', 'EBITDA',
                 'EBITDA_SIGMA', 'LOSS', 'LEVERAGE', 'PTBI', 'VOL_PTBI', 'DELTA_SGA', 'SIZE', 'FIRM_AGE',
                 'FX_EXPO_DUMMY']:
@@ -184,6 +181,7 @@ if __name__ == '__main__':
         reg_df_2.loc[:, key] = reg_df_2[isin_key].fillna(reg_df_2[key])
         key_to_drop.append(isin_key)
 
-    reg_df_3: DataFrame = reg_df_2.drop([key_to_drop], axis=1).replace([np.inf, -np.inf], np.nan)
+    reg_df_3: DataFrame = reg_df_2.drop(key_to_drop, axis=1).replace([np.inf, -np.inf], np.nan).rename(
+        columns=rename_columns)
     reg_df_3.to_pickle(os.path.join(const.TEMP_PATH, '20200214_fx_csr_reg_df_t_1.pkl'))
     reg_df_3.to_stata(os.path.join(const.RESULT_PATH, '20200214_fx_csr_reg_df_t_1.dta'), write_index=False)
