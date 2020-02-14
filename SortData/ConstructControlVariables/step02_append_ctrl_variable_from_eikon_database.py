@@ -185,5 +185,5 @@ if __name__ == '__main__':
         key_to_drop.append(isin_key)
 
     reg_df_3: DataFrame = reg_df_2.drop([key_to_drop], axis=1).replace([np.inf, -np.inf], np.nan)
-    reg_df_3.to_pickle(os.path.join(const.TEMP_PATH, '20200214_fx_csr_reg_df.pkl'))
-    reg_df_3.to_stata(os.path.join(const.RESULT_PATH, '20200214_fx_csr_reg_df.dta'), write_index=False)
+    reg_df_3.to_pickle(os.path.join(const.TEMP_PATH, '20200214_fx_csr_reg_df_t_1.pkl'))
+    reg_df_3.to_stata(os.path.join(const.RESULT_PATH, '20200214_fx_csr_reg_df_t_1.dta'), write_index=False)
