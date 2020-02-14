@@ -24,13 +24,17 @@ CTRL_VARS = ['GDP_LN GDP_GROWTH GDP_CAP_LN IMPORT_RATIO EXPORT_RATIO INTEREST_RA
 
 IND_VARS = ['usd_annual_unexpected_garch_vola usd_annual_log_rate',
             'basket60_ann_unexp_garch_vol basket60_annual_log_rate',
-            'basket27_annual_unexpected_garch basket27_annual_log_rate']
+            'basket27_annual_unexpected_garch basket27_annual_log_rate',
+            'usd_annual_unexpected_realized_v usd_annual_log_rate',
+            'basket60_annual_unexpected_reali basket60_annual_log_rate',
+            'basket27_annual_unexpected_reali basket27_annual_log_rate'
+            ]
 
 if __name__ == '__main__':
-    date_code = '20200213'
+    date_code = '20200214'
 
     reg_code_path = os.path.join(const.MINING_CODE_PATH, '{}_preliminary_regression_code.do'.format(date_code))
-    save_path = os.path.join(const.MINING_RESULT_PATH, date_code)
+    save_path = os.path.join(const.MINING_RESULT_PATH, '{}_combination1')
 
     cmd_list = ['clear', 'use "{}"'.format(os.path.join(const.RESULT_PATH, '20200116_fx_csr_reg_df.dta'))]
     fe_option = 'firm_fe industry_year_fe'
