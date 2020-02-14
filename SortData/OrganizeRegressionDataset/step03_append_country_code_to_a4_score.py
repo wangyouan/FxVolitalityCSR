@@ -33,6 +33,7 @@ if __name__ == '__main__':
                                                                                        on=['a4_country_code'])
     a4_df: DataFrame = pd.read_pickle(os.path.join(const.TEMP_PATH, '20191223_tr_a4_score.pkl'))
     a4_df_with_country_symbol: DataFrame = a4_df.merge(symbol_df_cty, on=[const.ISIN])
+    a4_df.loc[:, const.YEAR] -= 1
 
     fx_data_df: DataFrame = pd.read_pickle(os.path.join(const.DATA_PATH, '20190429_foreign_exchange_volatility.pkl'))
     quarterly_keys = [i for i in fx_data_df.keys() if 'quarter' in i]
@@ -55,5 +56,5 @@ if __name__ == '__main__':
     a4_df_with_fx2.loc[:, 'ES_Score'] = a4_df_with_fx2[['ENV_Score', 'SOC_Score']].mean(axis=1)
     a4_df_with_fx2.loc[:, 'CGOV_Score'] = a4_df_with_fx2[
         ['Management_Score', 'Shareholders_Score', 'CSR_Strategy_Score']].mean(axis=1)
-    a4_df_with_fx2.to_pickle(os.path.join(const.TEMP_PATH, '20191223_a4_score_with_fx_code.pkl'))
-    a4_df_with_fx2.to_stata(os.path.join(const.RESULT_PATH, '20191223_a4_score_with_fx_code.dta'), write_index=False)
+    a4_df_with_fx2.to_pickle(os.path.join(const.TEMP_PATH, '20200214_a4_score_with_fx_code_t_1.pkl'))
+    # a4_df_with_fx2.to_stata(os.path.join(const.RESULT_PATH, '20191223_a4_score_with_fx_code.dta'), write_index=False)
