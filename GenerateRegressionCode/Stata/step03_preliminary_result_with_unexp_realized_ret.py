@@ -13,7 +13,12 @@ python -m GenerateRegressionCode.Stata.step03_preliminary_result_with_unexp_real
 import os
 
 from Constants import Constants as const
-from .step02_preliminary_regression_result import DEP_VARS, CTRL_VARS
+from .step02_preliminary_regression_result import CTRL_VARS
+
+DEP_VARS = ['CASH_LN', 'CASH_RATIO', 'ESG_Score', 'ESG_Controversies_Score', 'ES_Score', 'ENV_Score', 'SOC_Score',
+            'CGOV_Score', 'Resource_Use_Score', 'Emissions_Score', 'Environmental_Innovation_Score', 'Workforce_Score',
+            'Community_Score', 'Human_Rights_Score', 'Product_Responsibility_Score', 'Management_Score',
+            'Shareholders_Score', 'CSR_Strategy_Score']
 
 if __name__ == '__main__':
     reg_code_path = os.path.join(const.MINING_CODE_PATH, '2020302_preliminary_regression_code.do')
