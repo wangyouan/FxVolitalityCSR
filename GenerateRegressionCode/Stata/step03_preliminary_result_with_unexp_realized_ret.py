@@ -23,15 +23,15 @@ if __name__ == '__main__':
     text_option = 'Firm Dummy, Yes, Industry Year Dummy, Yes, Cluster, Firm'
     or_option = 'tstat bdec(4) tdec(4) rdec(4) nolabel append'
 
-    for ind in ['usd_annual_unexpected_garch_vola usd_annual_log_rate',
+    for ind in ['usd_ann_unexp_garch_vol usd_ann_ln',
                 # 'basket60_annual_unexpected_reali basket60_annual_log_rate',
-                'basket27_annual_unexpected_garch basket27_annual_log_rate']:
+                'basket27_ann_unexp_garch_vol basket27_ann_ln']:
         for dep in DEP_VARS:
             cmd_list.append(
                 'capture qui reghdfe {dep} {ind} {ctrl}, absorb({fe}) cluster(firm_fe) keepsingleton'.format(
                     dep=dep, ind=ind, fe=fe_option, ctrl=' '.join(CTRL_VARS)))
             cmd_list.append('outreg2 using "{save_file}", addtext({text}) {or_option}'.format(
-                save_file=os.path.join(const.MINING_RESULT_PATH, '202003023_mined_result_{}.txt'.format(
+                save_file=os.path.join(const.MINING_RESULT_PATH, '20200302_mined_result_{}.txt'.format(
                     ind.split('_')[0])), text=text_option, or_option=or_option
             ))
             cmd_list.append('')
