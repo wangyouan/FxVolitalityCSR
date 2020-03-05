@@ -151,12 +151,13 @@ if __name__ == '__main__':
     ctat_df_with_eikon.loc[:, 'DELTA_SGA'] = ctat_df_with_eikon.groupby(const.GVKEY)['sale'].diff() / \
                                              ctat_df_with_eikon['lag_at'] * -1
     ctat_df_with_eikon.loc[:, 'SIZE'] = ctat_df_with_eikon['at'].progress_apply(np.log)
-    ctat_df_with_eikon.loc[:, 'FX_EXPO_DUMMY'] = ctat_df_with_eikon['fca'].fillna(0).apply(lambda x: int(x > 0))
+    ctat_df_with_eikon.loc[:, 'FX_EXPO_DUMMY'] = ctat_df_with_eikon['fca'].notnull().astype(int)
     ctat_df_with_eikon.loc[:, 'FIRM_AGE'] = ctat_df_with_eikon['TR_firm_age'].progress_apply(lambda x: np.log(x + 1))
 
-    ctat_df_with_eikon_with_kz = ctat_df_with_eikon.groupby(const.GVKEY).progress_apply(calculate_kz_index)
+    ctat_df_with_eikon_with_kz = ctat_df_with_eikon.groupby(const.GVKEY).progress_apply(calculate_kz_index).reset_index(
+        drop=False)
 
-    ctat_df_with_eikon_with_kz.to_pickle(os.path.join(const.TEMP_PATH, '20200303_ctat_global_ctrl_vars_t_1.pkl'))
+    ctat_df_with_eikon_with_kz.to_pickle(os.path.join(const.TEMP_PATH, '20200304_ctat_global_ctrl_vars_t_1.pkl'))
     ctrl_df: DataFrame = ctat_df_with_eikon_with_kz.rename(
         columns={'isin': 'ISIN'}).loc[:,
                          [const.GVKEY, 'ISIN', const.YEAR, 'CASH_LN', 'CASH_RATIO', 'KZ_INDEX', 'TobinQ', 'EBITDA',
